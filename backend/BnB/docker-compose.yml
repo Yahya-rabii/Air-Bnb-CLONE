@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:8-debian
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: yahyarb
+      MYSQL_DATABASE: airbnb
+      MYSQL_USER: yahyarb
+      MYSQL_PASSWORD: yahyarb
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    networks:
+      - db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mysql
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: yahyarb
+      PMA_PASSWORD: yahyarb
+
+    networks:
+      - db
+
+volumes:
+  db:
+networks:
+  db:
