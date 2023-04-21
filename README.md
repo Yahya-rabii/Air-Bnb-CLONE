@@ -25,7 +25,7 @@ The application provides the following features:
 
 ### To install and run the application, follow these steps:
   Clone the repository:
-    git clone https://github.com/<username>/<repository>.git
+    git clone https://github.com/Yahya-rabii/Air-Bnb-CLONE.git
 
   Navigate to the project directory:
     cd Air-Bnb-CLONE
