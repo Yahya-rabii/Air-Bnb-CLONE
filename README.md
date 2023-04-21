@@ -41,8 +41,8 @@ The application provides the following features:
     docker-compose up
 
     Open a web browser and go to http://localhost:3000/ to access the application frontend.
-    Open a web browser and go to http://localhost:8080/ to test the application API Endpoints.
-    Open a web browser and go to http://localhost:8080/ to access PhpMyadmin interface .
+    Open a web browser or a API development tool and test the application API Endpoints on http://localhost:8080/ .
+    Open a web browser and go to http://localhost:8081/ to access PhpMyadmin interface .
 
 ## Usage
 
