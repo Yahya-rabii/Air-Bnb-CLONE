@@ -1,4 +1,4 @@
-# full-stack web application that uses Spring Boot and React:
+# full-stack web application made using Spring Boot and React:
 
  ## Technologies Used
 
