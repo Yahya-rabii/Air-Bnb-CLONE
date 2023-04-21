@@ -18,7 +18,7 @@
 
     Clone the repository:
 
-git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+git clone https://github.com/Yahya-rabii/Air-Bnb-CLONE.git
 
 ## Navigate to the backend directory and start the Spring Boot application:
 
