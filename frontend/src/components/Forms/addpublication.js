@@ -88,10 +88,6 @@ const AddPublicationForm = () => {
       });
   };
 
-  const handlePopupClose = () => {
-    document.body.classList.remove("popup-open"); // remove the CSS class
-  };
-
   return (
     <>
       <div className="popup" onClick={handlePopupClick}>

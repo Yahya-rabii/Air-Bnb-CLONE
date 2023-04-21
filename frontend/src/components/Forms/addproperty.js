@@ -21,9 +21,7 @@ const AddPropertyForm = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("Token");
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
+
 
     const decodedToken = jwt_decode(token);
     const { sub } = decodedToken;
@@ -76,9 +74,7 @@ const AddPropertyForm = () => {
     document.body.classList.add("popup-open"); // add the CSS class
   };
 
-  const handlePopupClose = () => {
-    document.body.classList.remove("popup-open"); // remove the CSS class
-  };
+
   return (
     <>
       <div className="popup" onClick={handlePopupClick}>

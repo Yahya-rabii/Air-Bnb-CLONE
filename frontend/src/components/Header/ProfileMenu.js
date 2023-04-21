@@ -110,9 +110,7 @@ export default function BasicMenu() {
         <MenuItem onClick={handleSignin} className="menu-items">
           Login
         </MenuItem>
-        <MenuItem onClick={handlelogout} className="menu-items">
-          Logout
-        </MenuItem>
+
         <MenuItem onClick={handleaddpub} className="menu-items">
           add Publication
         </MenuItem>
@@ -127,14 +125,12 @@ export default function BasicMenu() {
             width: "100%",
           }}
         />
-        <MenuItem onClick={handleClose} className="menu-items">
-          Airbnb Your Home
-        </MenuItem>
-        <MenuItem onClick={handleClose} className="menu-items">
-          Host an experience
-        </MenuItem>
-        <MenuItem onClick={handleClose} className="menu-items">
-          Help
+        <MenuItem
+          onClick={handlelogout}
+          className="menu-items"
+          style={{ color: "red" }}
+        >
+          Logout
         </MenuItem>
       </Menu>
       {showRegistrationForm && (

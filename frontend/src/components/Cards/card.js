@@ -13,14 +13,11 @@ import jwt_decode from "jwt-decode";
 function Card({ publication }) {
   const [isReserved, setIsReserved] = useState(false);
   const [userEmail, setUserEmail] = useState("");
-  const [userId, setUserId] = useState("");
-  const [user, setUser] = useState("");
+
 
   useEffect(() => {
     const token = localStorage.getItem("Token");
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
+  
 
     const decodedToken = jwt_decode(token);
     const { sub } = decodedToken;
@@ -31,7 +28,7 @@ function Card({ publication }) {
     if (publication.property.rentAvailability === false) {
       setIsReserved(true);
     }
-  }, []);
+  },  [publication.property.rentAvailability, userEmail]);
 
   const handleReservation = async () => {
     try {
