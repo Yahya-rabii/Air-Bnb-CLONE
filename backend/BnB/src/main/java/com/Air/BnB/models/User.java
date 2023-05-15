@@ -52,8 +52,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner")
     private List<Property> propertyIds = new ArrayList<>();
 
-    @Column(nullable = false)
-    private boolean isOwner = false;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -106,7 +104,4 @@ public class User implements UserDetails {
         this.propertyIds.add(propertyId);
     }
 
-    public void makeOwner() {
-        this.isOwner = true;
-    }
 }

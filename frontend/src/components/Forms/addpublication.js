@@ -93,7 +93,6 @@ const AddPublicationForm = () => {
       <div className="popup" onClick={handlePopupClick}>
         <form onSubmit={handleSubmit}>
           <h2>Add Publication</h2>
-          <label htmlFor="releaseDate">Release Date:</label>
           <input
             type="date"
             name="releaseDate"
@@ -102,8 +101,8 @@ const AddPublicationForm = () => {
               setPublication({ ...publication, releaseDate: e.target.value })
             }
             required
+            placeholder="Release Date:"
           />
-          <label htmlFor="title">Title:</label>
           <input
             type="text"
             name="title"
@@ -112,9 +111,9 @@ const AddPublicationForm = () => {
               setPublication({ ...publication, title: e.target.value })
             }
             required
+            placeholder="Title:"
           />
 
-          <label htmlFor="publisher">Publisher:</label>
           <input
             type="text"
             name="publisher"
@@ -123,10 +122,11 @@ const AddPublicationForm = () => {
               setPublication({ ...publication, publisher: e.target.value })
             }
             required
+            placeholder="Publisher:"
           />
 
-          <h3>Select a Property:</h3>
           <select
+            className="type"
             id="propertySelect"
             value={publication.property.idProperty}
             onChange={(e) =>
@@ -139,7 +139,7 @@ const AddPublicationForm = () => {
               })
             }
           >
-            <option value="">--Please select a property--</option>
+            <option value="">Please select a property</option>
             {properties.map((property) => (
               <option key={property.idProperty} value={property.idProperty}>
                 {property.address}, {property.type},{property.size},

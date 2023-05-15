@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AddPublicationForm from "../Forms/addpublication";
@@ -17,7 +17,7 @@ export default function BasicMenu() {
   const [ShowAddpropForm, setShowAddpropForm] = React.useState(false);
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
-  const [owner, setOwner] = React.useState(false);
+  const [role, setRole] = React.useState("USER");
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -48,32 +48,37 @@ export default function BasicMenu() {
     localStorage.removeItem("Token");
   };
   const handleaddpub = () => {
-    setShowLoginForm(false);
-    setShowAddpubForm(true);
-    setShowAddpropForm(false);
-    setShowRegistrationForm(false);
-    handleClose();
+    if (localStorage.getItem("Token")) {
+      setShowLoginForm(false);
+      setShowAddpubForm(true);
+      setShowAddpropForm(false);
+      setShowRegistrationForm(false);
+      handleClose();
+    } else {
+      alert("Please log in first.");
+    }
   };
 
   const handleaddprop = () => {
-    setShowLoginForm(false);
-    setShowAddpubForm(false);
-    setShowAddpropForm(true);
-    setShowRegistrationForm(false);
-    handleClose();
-  };
-  const justClose = () => {
-    SubmitEvent.apply();
-    setShowLoginForm(false);
-    setShowAddpubForm(false);
-    setShowAddpropForm(false);
-    setShowRegistrationForm(false);
-    handleClose();
+    if (localStorage.getItem("Token")) {
+      setShowLoginForm(false);
+      setShowAddpubForm(false);
+      setShowAddpropForm(true);
+      setShowRegistrationForm(false);
+      handleClose();
+    } else {
+      alert("Please log in first.");
+    }
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  function submitAndClose() {
+    document.getElementById("login").submit();
+    setShowLoginForm(false);
+  }
 
   return (
     <div>
@@ -146,7 +151,7 @@ export default function BasicMenu() {
                 email: email,
                 phoneNumber: phoneNumber,
                 password: password,
-                owner: owner,
+                role: role,
               }),
               headers: {
                 "Content-Type": "application/json",
@@ -160,6 +165,7 @@ export default function BasicMenu() {
               .catch((error) => console.error(error));
           }}
         >
+          <h2>Signup</h2>
           <input
             type="text"
             name="firstName"
@@ -190,60 +196,76 @@ export default function BasicMenu() {
             placeholder="Password"
             onChange={(event) => setPassword(event.target.value)}
           />
-          <label>Owner</label>
-          <input
-            type="checkbox"
-            name="owner"
-            checked={owner}
-            placeholder="Owner"
-            onChange={(event) => setOwner(true)}
-          />
+
+          <select
+            className="type"
+            name="Role"
+            onChange={(event) => setRole(event.target.value)}
+          >
+            <option value="OWNER">USER</option>
+            <option value="OWNER">OWNER</option>
+          </select>
           <button type="submit">Register</button>
         </form>
       )}
 
       {showLoginForm && (
-        <form
-          form
-          className="popup"
-          onSubmit={(event) => {
-            event.preventDefault();
-            fetch("http://localhost:8080/authenticate", {
-              method: "POST",
-              body: JSON.stringify({
-                email: email,
-                password: password,
-              }),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            })
-              .then((response) => response.text())
-              .then((jwtToken) => {
-                localStorage.setItem("Token", jwtToken);
-              });
-          }}
-        >
-          <input
-            type="text"
-            name="email"
-            placeholder="email"
-            onChange={(event) => setEmail(event.target.value)}
-          />
-          <input
-            type="text"
-            name="password"
-            placeholder="password"
-            onChange={(event) => setPassword(event.target.value)}
-          />
+        <>
+          <form
+            form
+            id="login"
+            className="popup"
+            onSubmit={(event) => {
+              event.preventDefault();
+              fetch("http://localhost:8080/authenticate", {
+                method: "POST",
+                body: JSON.stringify({
+                  email: email,
+                  password: password,
+                }),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              })
+                .then((response) => response.text())
+                .then((jwtToken) => {
+                  localStorage.setItem("Token", jwtToken);
+                  submitAndClose();
+                });
+            }}
+          >
+            <h2>Login</h2>
 
-          <button type="submit" onClick={justClose}>
-            Login
-          </button>
-        </form>
+            <input
+              type="text"
+              name="email"
+              placeholder="email"
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <input
+              type="text"
+              name="password"
+              placeholder="password"
+              onChange={(event) => setPassword(event.target.value)}
+            />
+
+            <button type="submit">Login</button>
+          </form>
+        </>
       )}
-      {ShowAddpubForm && <AddPublicationForm />}
-      {ShowAddpropForm && <AddPropertyForm />}
+      {ShowAddpubForm && localStorage.getItem("Token") ? (
+        <AddPublicationForm />
+      ) : null}
+
+      {ShowAddpropForm && localStorage.getItem("Token") ? (
+        <AddPropertyForm />
+      ) : null}
+
+      {!localStorage.getItem("Token") && (ShowAddpropForm || ShowAddpubForm) ? (
+        <div className="popup" style={{ backgroundColor: "#fff" }}>
+          <p style={{ color: "var(--red)" }}>Please login first</p>
+        </div>
+      ) : null}
     </div>
   );
 }

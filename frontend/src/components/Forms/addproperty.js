@@ -22,50 +22,46 @@ const AddPropertyForm = () => {
   useEffect(() => {
     const token = localStorage.getItem("Token");
 
-
     const decodedToken = jwt_decode(token);
     const { sub } = decodedToken;
     const email = sub;
     setUserEmail(email);
   }, []);
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    axios
-      .get(`http://localhost:8080/users/getid/${userEmail}`)
-      .then((response) => {
-        setuserId(response.data);
-        console.log(userId);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      const response1 = await axios.get(
+        `http://localhost:8080/users/getid/${userEmail}`
+      );
 
-    axios
-      .get(`http://localhost:8080/users/email/${userEmail}`)
-      .then((response) => {
-        const user = response.data;
-        console.log(Object.values(user));
-        axios
-          .post(`http://localhost:8080/${userId}/addPropertybyowner`, {
-            ...property,
-            owner: {
-              ownerId: user.userId,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              email: user.email,
-              phoneNumber: user.phoneNumber,
-              role: user.role,
-            },
-          })
-          .then((response) => {})
-          .catch((error) => {
-            console.error(error);
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      setuserId(response1.data);
+      console.log(userId);
+
+      const response2 = await axios.get(
+        `http://localhost:8080/users/email/${userEmail}`
+      );
+      const user = response2.data;
+      console.log(Object.values(user));
+      const response3 = await axios.post(
+        `http://localhost:8080/${userId}/addPropertybyowner`,
+        {
+          ...property,
+          owner: {
+            ownerId: user.userId,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            role: user.role,
+          },
+        }
+      );
+      document.getElementById("popup").submit();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handlePopupClick = (event) => {
@@ -74,127 +70,102 @@ const AddPropertyForm = () => {
     document.body.classList.add("popup-open"); // add the CSS class
   };
 
-
   return (
     <>
       <div className="popup" onClick={handlePopupClick}>
-        <form onSubmit={handleSubmit}>
+        <form id="popup" onSubmit={handleSubmit}>
           <h2>Add Property</h2>
-          <label htmlFor="type">Type:</label>
-          <input
-            type="text"
+          <select
+            className="type"
             name="type"
             value={property.type}
-            onChange={(e) =>
-              setProperty({
-                ...property,
-
-                type: e.target.value,
-              })
-            }
+            onChange={(e) => setProperty({ ...property, type: e.target.value })}
             required
-          />
-          <label htmlFor="image">Image:</label>
+            placeholder="Property type:"
+          >
+            <option value="">Select property type</option>
+            <option value="Apartment">Apartment</option>
+            <option value="House">House</option>
+            <option value="Studio">Studio</option>
+          </select>
           <input
             type="text"
             name="image"
             value={property.image}
             onChange={(e) =>
-              setProperty({
-                ...property,
-
-                image: e.target.value,
-              })
+              setProperty({ ...property, image: e.target.value })
             }
             required
+            placeholder="Image : "
           />
-          <label htmlFor="address">Address:</label>
           <input
             type="text"
             name="address"
             value={property.address}
             onChange={(e) =>
-              setProperty({
-                ...property,
-
-                address: e.target.value,
-              })
+              setProperty({ ...property, address: e.target.value })
             }
             required
+            placeholder="Address:"
           />
-          <label htmlFor="rentPaytype">Rent Paytype:</label>
-          <input
-            type="text"
+
+          <select
+            className="type"
             name="rentPaytype"
             value={property.rentPaytype}
             onChange={(e) =>
-              setProperty({
-                ...property,
-
-                rentPaytype: e.target.value,
-              })
+              setProperty({ ...property, rentPaytype: e.target.value })
             }
             required
-          />
-          <label htmlFor="size">Size:</label>
+            placeholder="Rent Paytype:"
+          >
+            <option value="">Select payment type</option>
+            <option value="Apartment">monthly</option>
+            <option value="House">weekly</option>
+            <option value="Studio">dayle</option>
+          </select>
+
           <input
             type="number"
             name="size"
             value={property.size}
             onChange={(e) =>
-              setProperty({
-                ...property,
-
-                size: parseFloat(e.target.value),
-              })
+              setProperty({ ...property, size: parseFloat(e.target.value) })
             }
             required
+            placeholder="Size:"
           />
-
-          <label htmlFor="price">Price:</label>
           <input
             type="number"
             name="price"
             value={property.price}
             onChange={(e) =>
-              setProperty({
-                ...property,
-
-                price: parseFloat(e.target.value),
-              })
+              setProperty({ ...property, price: parseFloat(e.target.value) })
             }
             required
+            placeholder="Price:"
           />
-          <label htmlFor="chambers">Chambers:</label>
           <input
             type="number"
             name="chambers"
             value={property.chambers}
             onChange={(e) =>
-              setProperty({
-                ...property,
-
-                chambers: parseInt(e.target.value),
-              })
+              setProperty({ ...property, chambers: parseInt(e.target.value) })
             }
             required
+            placeholder="Chambers:"
           />
-          <label htmlFor="rentAvailability">Rent Availability:</label>
+          <label htmlFor="rentAvailability">Rent Availability</label>
           <input
             type="checkbox"
             name="rentAvailability"
             checked={property.rentAvailability}
             onChange={(e) =>
-              setProperty({
-                ...property,
-
-                rentAvailability: e.target.checked,
-              })
+              setProperty({ ...property, rentAvailability: e.target.checked })
             }
             required
           />
-
-          <button type="submit">Add Publication</button>
+          <button>Add Publication</button>
         </form>
       </div>
     </>

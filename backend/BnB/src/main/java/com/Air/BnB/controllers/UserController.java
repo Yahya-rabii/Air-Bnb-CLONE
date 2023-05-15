@@ -6,6 +6,7 @@ import com.Air.BnB.models.Publication;
 import com.Air.BnB.repositories.UserRepository;
 import com.Air.BnB.repositories.PropertyRepository;
 import com.Air.BnB.repositories.PublicationRepository;
+import com.Air.BnB.user.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +53,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         User user = optionalUser.get();
-        if (!user.isOwner()) {
+        if (user.getRole().toString().equals("USER")) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         publication.setOwner(user);
@@ -69,7 +70,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         User user = optionalUser.get();
-        if (!user.isOwner()) {
+        if (user.getRole().toString().equals("USER")) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         property.setOwner(user);
@@ -84,7 +85,7 @@ public class UserController {
         return this.userRepository.findById(id).map(x -> {
             x.setFirstName(user.getFirstName());
             x.setLastName(user.getLastName());
-            x.setOwner(false);
+            x.setRole(Role.USER);
             return this.userRepository.save(x);
         }).orElseGet(() -> this.userRepository.save(user));
 
