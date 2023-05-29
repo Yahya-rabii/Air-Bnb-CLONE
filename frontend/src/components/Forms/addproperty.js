@@ -17,7 +17,6 @@ const AddPropertyForm = () => {
   });
 
   const [userEmail, setUserEmail] = useState("");
-  const [userId, setuserId] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("Token");
@@ -36,8 +35,7 @@ const AddPropertyForm = () => {
         `http://localhost:8080/users/getid/${userEmail}`
       );
 
-      setuserId(response1.data);
-      console.log(userId);
+      let userid = response1.data;
 
       const response2 = await axios.get(
         `http://localhost:8080/users/email/${userEmail}`
@@ -45,7 +43,7 @@ const AddPropertyForm = () => {
       const user = response2.data;
       console.log(Object.values(user));
       const response3 = await axios.post(
-        `http://localhost:8080/${userId}/addPropertybyowner`,
+        `http://localhost:8080/${userid}/addPropertybyowner`,
         {
           ...property,
           owner: {

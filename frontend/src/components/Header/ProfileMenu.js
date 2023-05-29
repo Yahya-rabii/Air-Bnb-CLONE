@@ -161,7 +161,10 @@ export default function BasicMenu() {
                 console.log(response);
                 return response.json();
               })
-              .then((data) => console.log(data))
+              .then((data) => {
+                setShowRegistrationForm(false);
+                setShowLoginForm(true);
+              })
               .catch((error) => console.error(error));
           }}
         >
