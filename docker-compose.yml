@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:8-debian
+    network_mode: "host"
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: yahyarb
+      MYSQL_DATABASE: airbnb
+      MYSQL_USER: yahyarb
+      MYSQL_PASSWORD: yahyarb
+
+
+
+
+
+  backend:
+    
+    image: yahyarabii/airbnb
+  
+    network_mode: "host"
+    depends_on:
+      - mysql
+    restart: always
+
+
+
+  frontend:
+    image: yahyarabii/airbnb-frontend
+    network_mode: "host"
+    depends_on:
+      - backend
+    
+    restart: always
+
+volumes:
+  db:
